@@ -13,7 +13,7 @@ def redimensioneaza_si_afiseaza_imagine(noua_latime, noua_inaltime):
     # Afisează imaginea redimensionată
     img_redimensionata.show()
 
-if _name_ == '_main_':
+if __name__ == '_main_':
 
     # Exemplu de utilizare
     noua_latime = 1600  # Înlocuiește cu lățimea dorită
@@ -90,7 +90,7 @@ def print_image(image):
         print(" ".join(str(pixel) for pixel in row))
 
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     example_image = [
         [0, 0, 0, 0, 0],
         [0, 1, 1, 1, 0],
@@ -117,12 +117,15 @@ if _name_ == '_main_':
 
 ############################################################################
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     # Crearea unei matrice de imagine de test 4x4
-    image_matrix = np.array([[10, 20, 30, 40],
-                             [50, 60, 70, 80],
-                             [90, 100, 110, 120],
-                             [130, 140, 150, 160]])
+    image_matrix = np.array([
+        [0, 0, 0, 0, 0],
+        [0, 1, 1, 1, 0],
+        [0, 1, 0, 1, 0],
+        [0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0]
+    ])
 
 
     # Functia pentru interpolare bilineara pentru subesantionare
@@ -199,13 +202,8 @@ if _name_ == '_main_':
 
 
     # Calculul erorii medii absolute (MAE)
-    def calcul_mae(imagine_originala, imagine_procesata):
-        return np.mean(np.abs(imagine_originala - imagine_procesata))
-
-
-    # Calculul erorii pătratice medii (RMSE)
-    def calcul_rmse(imagine_originala, imagine_procesata):
-        return np.sqrt(np.mean((imagine_originala - imagine_procesata) ** 2))
+    def calcul_mse(imagine_originala, imagine_procesata):
+        return np.mean((imagine_originala - imagine_procesata) ** 2)
 
 
     # Redimensionăm rezultatele subeșantionării și supereșantionării la dimensiunea originală
@@ -214,27 +212,23 @@ if _name_ == '_main_':
     supesantionare_resized = cv2.resize(supesantionare_result, (image_matrix.shape[1], image_matrix.shape[0]),
                                         interpolation=cv2.INTER_LINEAR)
 
-    # Calculam Eroarea Medie Absoluta și Eroarea Patratica Medie Radacina pentru subeșantionare
-    mae_subesantionare = calcul_mae(image_matrix, subesantionare_resized)
-    rmse_subesantionare = calcul_rmse(image_matrix, subesantionare_resized)
+    mse_subesantionare = calcul_mse(image_matrix, subesantionare_resized)
 
-    # Calculam MAE si RMSE pentru supereșantionare
-    mae_supesantionare = calcul_mae(image_matrix, supesantionare_resized)
-    rmse_supesantionare = calcul_rmse(image_matrix, supesantionare_resized)
+    mse_supesantionare = calcul_mse(image_matrix, supesantionare_resized)
 
     # Afișarea rezultatelor
-    print("Imaginea originala:")
+    print("Original Image:")
     print(image_matrix)
 
-    print("\nSubesantionare Bilineara:")
+    print("\nBilinear Subsampling:")
     print(subesantionare_result)
 
-    print("\nSupesantionare Bilineara:")
+    print("\nBilinear Supersampling:")
     print(supesantionare_result)
 
-    print("\n**Eroarea Medie Absoluta și Eroarea Patratica Medie Radacina**")
-    print("\nMAE si RMSE pentru Subesantionare:")
-    print(f"MAE: {mae_subesantionare}, RMSE: {rmse_subesantionare}")
+    print("\n**Mean Squared Error")
+    print("\nMSE for Subsampling:")
+    print(f"MSE: {mse_subesantionare}")
 
-    print("\nMAE si RMSE pentru Superesantionare:")
-    print(f"MAE: {mae_supesantionare}, RMSE: {rmse_supesantionare}")
+    print("\nMSE for Supersampling:")
+    print(f"MSE: {mse_supesantionare}")
